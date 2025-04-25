@@ -16,7 +16,7 @@ const currency=import.meta.env.VITE_CURRENCY;
 
 
     const [cartItems,setCartItems]=useState({});
-    const [searchQuery,setSearchQuery]=useState([]);
+    const [searchQuery,setSearchQuery]=useState({});
 
     const fetchProducts=async()=>{
       setProducts(dummyProducts);
