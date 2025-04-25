@@ -5,6 +5,7 @@ import BestSeller from '../components/BestSeller'
 import BottomBanner from '../components/BottomBanner'
 import { NewsLetter } from '../components/NewsLetter'
 
+
 const Home = () => {
   return (
     <div className='mt-10'>
@@ -13,6 +14,7 @@ const Home = () => {
       <BestSeller/>
       <BottomBanner/>
       <NewsLetter/>
+      
     </div>
   )
 }
