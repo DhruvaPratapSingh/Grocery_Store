@@ -51,11 +51,30 @@ const currency=import.meta.env.VITE_CURRENCY;
         setCartItems(cartData);
         toast.success("Item removed from cart successfully!");
     }
+    // get item count in cart
+    const getCartCount=()=>{
+        let TotalCount=0;
+        for(let item in cartItems){
+            TotalCount+=cartItems[item];
+        }
+        return TotalCount;
+    }
 
+    // get total price of cart items
+    const getCartAmount=()=>{
+        let totalAmount=0;
+        for(let items in cartItems){
+            let itemInfo=products.find((product)=>product._id===items);
+            if(cartItems[items] > 0){
+                totalAmount+=itemInfo.offerPrice*cartItems[items];
+            }
+        }
+        return Math.floor(totalAmount*100)/100;
+    }
   useEffect(()=>{
     fetchProducts();
   },[])
-    const value={navigate,user,setUser,isSeller,setIsSeller,showUserLogin,setShowUserLogin,products,currency,addToCart,updateCartItem,removeFromCart,cartItems,searchQuery,setSearchQuery};
+    const value={navigate,user,setUser,isSeller,setIsSeller,showUserLogin,setShowUserLogin,products,currency,addToCart,updateCartItem,removeFromCart,cartItems,searchQuery,setSearchQuery,getCartCount,getCartAmount};
   return <AppContext.Provider value={value}>
   {children}
   </AppContext.Provider>
