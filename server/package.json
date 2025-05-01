@@ -23,5 +23,8 @@
     "mongoose": "^8.14.0",
     "multer": "^1.4.5-lts.2",
     "stripe": "^18.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
