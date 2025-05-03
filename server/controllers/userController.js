@@ -60,7 +60,7 @@ try {
         sameSite:process.env.NODE_ENV==='production'?'none':'strict', //use none in production to allow cross site cookies
         maxAge:7*24*60*60*1000, // cookie will expire in 7 days
     });
-    res.status(200).json({success:true,user:{name:user.name,email:user.email},token});
+    return res.status(200).json({success:true,user:{name:user.name,email:user.email},token});
 } catch (error) {
     console.log(error.message);
     res.status(500).json({success:false,error:error.message});
