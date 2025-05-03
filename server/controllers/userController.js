@@ -82,15 +82,15 @@ export const isAuth=async (req, res) => {
 }
 
 // logout
-export const logout=async (req, res) => {
+export const logout = async (req, res) => {
     try {
-       res.clearCookie('token',{
-            httpOnly:true,//prevent js to access the cookie
-            secure:process.env.NODE_ENV==='production', //use secure cookies in production
-            sameSite:process.env.NODE_ENV==='production'?'none':'strict', //use none in production to allow cross site cookies
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', 
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
         });
-        return res.status(200).json({success:true,message:"Logged out successfully"});
+        return res.status(200).json({ success: true, message: "Logged out successfully" });
     } catch (error) {
-        res.status(500).json({success:false,message:error.message});
+        return res.status(500).json({ success: false, message: error.message });
     }
-}
+};
