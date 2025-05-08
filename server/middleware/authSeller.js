@@ -7,7 +7,7 @@ const authSeller=async (req,res,next)=>{
      }
 
      try {
-            const decoded = jwt.verify(selleToken, process.env.JWT_SECRET);
+            const decoded = jwt.verify(sellerToken, process.env.JWT_SECRET);
             // console.log(decoded.id);
             if(decoded.email === process.env.SELLER_EMAIL){
                 next();
