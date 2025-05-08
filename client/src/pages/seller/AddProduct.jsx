@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import {assets, categories} from './../../assets/assets';
+import toast from 'react-hot-toast';
+import { useAppContext } from './../../context/AppContext';
 
 const AddProduct = () => {
     const [files,setFiles]=useState([]);
@@ -8,10 +10,43 @@ const AddProduct = () => {
     const [category,setCategory]=useState('');
     const [price,setPrice]=useState('');
     const [offerPrice,setOfferPrice]=useState('');  
-    
+    const {axios}=useAppContext();
     
     const onSubmitHandler=async(e)=>{
-     e.preventDefault();
+        try {
+            e.preventDefault();
+            const productData={
+                name,
+                description:description.split('\n'),
+                category,
+                price,
+                offerPrice,
+            }
+            const formData=new FormData();
+            formData.append("productData",JSON.stringify(productData));
+             for(let i=0;i<files.length;i++){
+                formData.append("images",files[i]);
+             }
+            const {data}=await axios.post("/api/product/add",formData,{
+                withCredentials:true
+            });
+            if(data.success){
+                toast.success(data.message);
+                setFiles([]);
+                setName('');
+                setDescription('');
+                setCategory('');
+                setPrice('');
+                setOfferPrice('');
+            }
+            else{
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error);
+            
+        }
     }
   return (
       <div className="no-scorllbar flex-1 h-[95vh] overflow-y-scroll flex flex-col justify-between">
