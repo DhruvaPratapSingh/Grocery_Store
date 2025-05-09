@@ -43,6 +43,7 @@ const currency=import.meta.env.VITE_CURRENCY;
         try {
             const {data}=await axios.get("/api/user/is-auth");
             if(data.success){
+                // console.log(data);
                 setUser(data.user);
                 setCartItems(data.user.cartItems);
             }
@@ -53,20 +54,20 @@ const currency=import.meta.env.VITE_CURRENCY;
     }
 
     // fetch products
-    const fetchProducts=async()=>{
-      try {
-        const {data}=await axios.get("/api/product/list"); 
-        if(data.success){
-          setProducts(data.products);
+    const fetchProducts = async () => {
+        try {
+          const { data } = await axios.get("/api/product/list");
+          if (data.success) {
+            setProducts(data.products);
+          } else {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          toast.error(error.message);
+          console.log(error);
         }
-        else{
-          toast.error(data.message);
-        }
-      } catch (error) {
-        toast.error(error.message);
-        console.log(error);
-      }
-    }
+      };
+      
     const addToCart=(itemId)=>{
         let cartData=structuredClone(cartItems);
         if(cartData[itemId]){
@@ -122,6 +123,36 @@ const currency=import.meta.env.VITE_CURRENCY;
     fetchProducts();
     fetchSeller();
   },[])
+ 
+  
+  useEffect(() => {
+    const updateCart = async () => {
+      try {
+        const { data } = await axios.post("/api/cart/update", {
+          userId: user._id,
+          cartItems,
+        });
+  
+        if (!data.success) {
+          console.log(data.message);
+          toast.error(data.message);
+        } else {
+          console.log(data.message);
+        //   toast.success("Cart updated successfully!");
+        }
+      } catch (error) {
+        toast.error(error.message);
+        console.log(error.message);
+      }
+    };
+  
+    if (user && user._id) {
+      updateCart();
+    }
+  }, [cartItems]);
+  
+  
+
     const value={navigate,user,setUser,isSeller,setIsSeller,showUserLogin,setShowUserLogin,products,currency,addToCart,updateCartItem,removeFromCart,cartItems,searchQuery,setSearchQuery,getCartCount,getCartAmount,axios,fetchProducts};
   return <AppContext.Provider value={value}>
   {children}

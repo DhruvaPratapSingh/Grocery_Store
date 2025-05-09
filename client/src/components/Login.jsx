@@ -21,6 +21,7 @@ const {setShowUserLogin,setUser,axios,navigate}=useAppContext();
                 password,
             });
              if(data.success) {
+                // console.log(data);
                 toast.success(data.message);
                 setUser(data.user);
                 navigate("/");

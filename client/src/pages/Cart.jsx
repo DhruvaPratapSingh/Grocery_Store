@@ -21,7 +21,18 @@ const Cart = () => {
         }
         setCartArray(tempArray);
         }
-     
+        // const getCart = () => {
+        //     let tempArray = [];
+        //     for (const key in cartItems) {
+        //       let product = products.find((item) => item._id === key);
+        //       if (product) {
+        //         product = { ...product, quantity: cartItems[key] }; // Avoid mutating original object
+        //         tempArray.push(product);
+        //       }
+        //     }
+        //     setCartArray(tempArray);
+        //   };
+          
     useEffect(()=>{
         if(products.length>0 && cartItems){
         getCart();
