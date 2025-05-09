@@ -38,6 +38,21 @@ const currency=import.meta.env.VITE_CURRENCY;
             setIsSeller(false);
         }
     }
+    // fetch user status
+    const fetchUser=async()=>{
+        try {
+            const {data}=await axios.get("/api/user/is-auth");
+            if(data.success){
+                setUser(data.user);
+                setCartItems(data.user.cartItems);
+            }
+        }catch (error) {
+            console.log(error);
+            setUser(null);
+        }
+    }
+
+    // fetch products
     const fetchProducts=async()=>{
       try {
         const {data}=await axios.get("/api/product/list"); 
@@ -103,6 +118,7 @@ const currency=import.meta.env.VITE_CURRENCY;
         return Math.floor(totalAmount*100)/100;
     }
   useEffect(()=>{
+    fetchUser();
     fetchProducts();
     fetchSeller();
   },[])
