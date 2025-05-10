@@ -35,20 +35,25 @@ export const placeOrderCOD=async (req, res) => {
 }
 
 // get order by user id
-export const getUserOrders=async(req,res)=>{
-    try{
-        const {userId}=req.body;
-        const orders = await Order.find({
-            userId,
-            $or:[{paymentType:"COD"},{isPaid:true}]
-        }).populate("items.product address").sort({createdAt:-1});
-        res.json({success:true,orders});
-    }
-    catch(error){
-        console.log(error.message);
-        res.status(500).json({success:false,message:error.message})
-    }
-}
+export const getUserOrders = async (req, res) => {
+  try {
+    const { userId } = req.query;
+    // console.log(userId);
+
+    const orders = await Order.find({
+      userId,
+      $or: [{ paymentType: "COD" }, { isPaid: true }],
+    })
+      .populate("items.product address")
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, orders });
+    // console.log(orders);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 
 // get all orders
