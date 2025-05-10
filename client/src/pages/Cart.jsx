@@ -78,6 +78,24 @@ const Cart = () => {
                 toast.error(data.message);
             }
            }
+           else{
+            const { data } = await axios.post('/api/order/stripe', {
+  userId: user._id,
+  address: selectedAddress._id,
+  items: cartArray.map((item) => ({
+    product: item._id,
+    quantity: item.quantity
+    
+  }))
+});
+            // console.log(data);
+            if(data.success){
+                window.location.replace(data.url);
+            }
+            else{
+                toast.error(data.message);
+            }
+           }
         } catch (error) {
             toast.error(error.message);
         }
@@ -127,7 +145,7 @@ const Cart = () => {
                                 </div>
                             </div>
                         </div>
-                        <p className="text-center">{currency}{product.offerPrice * product.quantity}</p>
+                        <p className="text-center">{currency}{product.price * product.quantity}</p>
                         <button onClick={() => removeFromCart(product._id)} className="cursor-pointer mx-auto">
                            <img src={assets.remove_icon} alt="remove" className='inline-block w-6 h-6'/>
                         </button>

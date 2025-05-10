@@ -113,7 +113,7 @@ const currency=import.meta.env.VITE_CURRENCY;
         for(let items in cartItems){
             let itemInfo=products.find((product)=>product._id===items);
             if(cartItems[items] > 0){
-                totalAmount+=itemInfo.offerPrice*cartItems[items];
+                totalAmount+=itemInfo.price*cartItems[items];
             }
         }
         return Math.floor(totalAmount*100)/100;
