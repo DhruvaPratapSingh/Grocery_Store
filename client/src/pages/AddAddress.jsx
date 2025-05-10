@@ -1,5 +1,8 @@
 import React ,{useState} from 'react'
 import { assets } from '../assets/assets'
+import { useAppContext } from '../context/AppContext'
+import { toast } from 'react-hot-toast';
+import { useEffect } from 'react';
 const InputField=({type, placeholder, name,handleChange,address})=>(
     <input className='w-full px-2 py-2.5 border border-gray-300 rounded text-gray-500 outline-none focus:border-primary transition'
      type={type}
@@ -12,7 +15,8 @@ const InputField=({type, placeholder, name,handleChange,address})=>(
       />
 )
 const AddAddress = () => {
-
+      const {axios,user,navigate}=useAppContext();
+     
     const [address, setAddress] = useState({
         firstName: "",
         lastName: "",
@@ -34,8 +38,24 @@ const AddAddress = () => {
     }
     const onSubmitHandler=async(e)=>{
         e.preventDefault();
-        console.log("Address added successfully");
-    }
+         try {
+           const {data}=await axios.post('/api/address/add',{address,userId:user._id});
+           if(data.success){
+            toast.success(data.message);
+            navigate('/cart')
+           }
+           else {
+            toast.error(data.message)
+           }
+         } catch (error) {
+            toast.error(error.message)
+         }
+      }
+      useEffect(() => {
+        if(!user){
+          navigate('/cart');
+        }
+      }, []);
   return (
     <div className="mt-16 pb-16">
     <p className='text-2xl md:text-3xl font-medium text-gray-500'>Add Shipping <span className='text-primary font-semibold'>Address</span> </p>
@@ -56,7 +76,7 @@ const AddAddress = () => {
            </div>
            <div className="grid grid-cols-2 gap-4">
            <InputField handleChange={handleChange} address={address} name="country" type="text" placeholder="country"/>
-           <InputField handleChange={handleChange} address={address} name="zipcode" type="number" placeholder="zipcode"/>
+           <InputField handleChange={handleChange} address={address} name="zipCode" type="number" placeholder="zipCode"/>
            </div>
            <InputField handleChange={handleChange} address={address} name="phone" type="text" placeholder="phone"/>
            <button type='submit' className='w-full mt-6 py-3 bg-primary text-white font-medium hover:bg-primary-dull transition cursor-pointer uppercase'>Add Address</button>
