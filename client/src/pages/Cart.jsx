@@ -5,7 +5,7 @@ import { assets} from '../assets/assets';
 import toast from 'react-hot-toast';
 
 const Cart = () => {
-    const {products,currency,cartItems,removeFromCart,getCartCount,updateCartItem,navigate,getCartAmount,axios,user}=useAppContext();
+    const {products,currency,cartItems,removeFromCart,getCartCount,updateCartItem,navigate,getCartAmount,axios,user,setCartItems}=useAppContext();
 
     const [cartArray, setCartArray] = useState([]);
     const [addresses, setAddresses] = useState([]);
@@ -38,7 +38,7 @@ const Cart = () => {
          try {
             const {data}=await axios.post("/api/address/get", { userId: user._id }); // Use POST instead of GET
 
-            console.log(data);
+            // console.log(data);
             if(data.success){
                 setAddresses(data.addresses);
                 if(data.addresses.length>0){
@@ -55,9 +55,31 @@ const Cart = () => {
 
 
 
-    const placeOrder=()=>{
-        if(!selectedAddress){
-            alert("Please select an address to proceed with the order.");   
+    const placeOrder= async ()=>{
+        try {
+            if(!selectedAddress){
+                return toast.error("Please select an address to proceed with the order.");   
+            }
+            if(paymentOption==='COD'){
+             const {data}=await axios.post('/api/order/cod', {
+                userId:user._id,
+                products:cartArray,
+                items:cartArray.map((item)=>({product:item._id,quantity:item.quantity})),
+                totalAmount:getCartAmount()+getCartAmount()*0.02,
+                address:selectedAddress._id,
+            });
+            console.log(data);
+            if(data.success){
+                toast.success(data.message);
+                setCartItems({})
+                navigate('/my-orders');
+            }
+            else{
+                toast.error(data.message);
+            }
+           }
+        } catch (error) {
+            toast.error(error.message);
         }
     }
     useEffect(() => {
