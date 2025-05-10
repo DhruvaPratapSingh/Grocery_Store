@@ -26,7 +26,7 @@ export const placeOrderCOD=async (req, res) => {
             address,
             amount,
             paymentType: "COD",
-            isPaid: false,
+            // isPaid: false,
         });
         return res.json({ success: true, message: "Order Placed" });
     } catch (error) {
@@ -64,7 +64,7 @@ export const placeOrderStripe=async (req, res) => {
             address,
             amount,
             paymentType: "Online",
-            isPaid: true,
+            // isPaid: true,
         });
 
         // create stripe session
