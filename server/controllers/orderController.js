@@ -4,7 +4,7 @@ import stripe from "stripe";
 import User from './../models/User.js';
 export const placeOrderCOD=async (req, res) => {
     try {
-        const { userId, items, address } = req.body;
+        const { userId, items, address,cartItems } = req.body;
         if(!address || items.length===0){
             return res.status(400).json({success:false,message:"invalid data"});
         }
@@ -15,7 +15,7 @@ export const placeOrderCOD=async (req, res) => {
             if (!product) {
                 throw new Error("Product not found");
             }
-            return (await acc) + product.offerPrice * item.quantity;
+            return (await acc) + product.price * item.quantity;
         }, 0);
         // add tax
         amount += Math.floor(amount * 0.02); // 2% tax
@@ -26,7 +26,7 @@ export const placeOrderCOD=async (req, res) => {
             address,
             amount,
             paymentType: "COD",
-            // isPaid: false,
+            isPaid: false,
         });
         return res.json({ success: true, message: "Order Placed" });
     } catch (error) {
@@ -53,7 +53,7 @@ export const placeOrderStripe=async (req, res) => {
             if (!product) {
                 throw new Error("Product not found");
             }
-            return (await acc) + product.offerPrice * item.quantity;
+            return (await acc) + product.price * item.quantity;
         }, 0);
         // add tax
         amount += Math.floor(amount * 0.02); // 2% tax
@@ -64,7 +64,7 @@ export const placeOrderStripe=async (req, res) => {
             address,
             amount,
             paymentType: "Online",
-            // isPaid: true,
+            isPaid: true,
         });
 
         // create stripe session
