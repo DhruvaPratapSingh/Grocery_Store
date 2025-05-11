@@ -1,3 +1,9 @@
+### for seller login
+visit page [https://grocery-store-front-two.vercel.app/seller]
+use ⤵️
+- email abc@gmail.com
+- password 1234
+
 # grocery frontend 
 # start code
 start [npm run dev]
